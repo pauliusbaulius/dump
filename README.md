@@ -18,22 +18,19 @@ Various smaller code samples I've implemented. Most of it comes from university 
     - Red-Black-Tree #TODO
       Very annoying trees used in Linux Completely Fair Scheduler.
     - Skip-List #TODO
-
-- [Egyptian Multiplication](egyptian_multiplication.py)
+- Egyptian Multiplication [Python](egyptian_multiplication.py) [C](egyptian_multiplication.c) [ARM Assembly](egyptian_multiplication.s)
   Multiple numbers without '*'.
-
 - [Sieve Of Eratosthenes](sieve_of_eratosthenes.py)
   Calculate array of prime numbers.
-
 - [Square Root](square_root.py)
   Various square root calculation implementations.
-
 - [Gaussian Sum](gauss.py)
-
 - [Iterative Factorial](factorial.py)
   Generate array of factorials. Array index is the number. Value at that index is factor of it.
-
 - [Monte-Carlo-Algorithm](pi_parallel.c)
   C implementation with multiprocessing using OpenMP.
-
 - Python DOS #TODO
+- [Racket TLDR](DrRacketTLDR.rkt)
+  Racket is a programming language from LISP family. Notes are from my first semester, no h8 pls. 
+- [Parity bit](paritybit.s)
+  Calculate parity bit of a message in ARM Assembly.
