@@ -1,0 +1,26 @@
+body {
+    max-width: 1600px;
+    margin: auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 2fr));
+    grid-template-rows: auto;
+    grid-auto-flow: row dense;
+    grid-gap: 2vh;
+}
+
+
+.post {
+    background-color: red;
+    min-height: 250px;
+}
+
+.post-large {
+    background-color: blue;
+    grid-column-end: span 2;
+    grid-row-end: span 2;
+    min-height: 500px;
+
+}

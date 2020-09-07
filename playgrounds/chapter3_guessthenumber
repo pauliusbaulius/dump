@@ -1,0 +1,27 @@
+#   FINAL EXERCISE OF THE CHAPTER 3
+#   MAKE A GUESSING GAME
+#       1. random number gets generated
+#       2. you guess it until you get it right
+#       3. guess number from 1 to 20
+import random, sys
+
+num = random.randint(1,20)
+
+while True:
+    print('Guess a number between 1 and 20: ')
+    #   take user input from console
+    guess = int(input())
+    #   if the guess is not in range exit the program
+    if guess > 20 or guess < 1:
+        print('Not within the range!')
+        sys.exit()
+    #   if the guess is right break the loop
+    if guess == num:
+        print('You have guessed right!')
+        break
+    #   if guess is bigger than secret number, print 'Guess is too big.'
+    #   else print 'Guess is too low.'
+    if guess > num:
+        print('Guess is too big.')
+    else:
+        print('Guess is too low.')
