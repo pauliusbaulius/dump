@@ -1,19 +1,67 @@
 #!/usr/bin/env python3
 
+description = """
+    👽 EMOJIPHER 👽
+    
+    Your favorite encryption tool!
+    
+    Are you bored of cryptographically safe means of encryption like AES256?
+    You hate asymmetric encryption?
+    You are a modern human that loves big hard drives and emojis?
+    You want to waste as much bandwith as you can?
+    You want to choke NSA and TENCENT servers with emoji?
+
+    If you answered any of those questions with YES, this script is for you.
+    
+    Encrypt your data by turning each byte of source file into emoji! Yes, thats right.
+    Each byte becomes 4 bytes! And you get multiple emoji possibilities per byte!
+    Frequency analysis? More like waste of electricity.
+    
+    Okay, I want this, but how do I start?
+    
+    1. Generate your personal key by issuing. It will append .emojipher to the end of your given name.
+        $ ./emojipher.py -g my_key
+        
+    2. Encrypt some data!
+        $ ./emojipher.py -e my_secrets.txt -k my_key.emojipher
+        
+    3. ... Do whatever you want, store it, send it, share it 🤡
+    
+    4. Decrypt your precious data.
+        $ ./emojipher.py -d my_secrets.txt.encrypted -k my_key.emojipher
+        
+    5. Enjoy your decrypted data, but make sure you are alone.
+    
+    Made with 🤡 by the 🤤 in www.exception.lt
+    """
+
+changelog = """
+👽 EMOJIPHER CHANGELOG 👽
+
+10.10.2020
++ made everything async, because why not. i have not checked if it made it faster/slower, but added because it is hype to do async.
++ fixed decryption making file disappear.
+- removed emojipedia depedency by hardcoding emojis into the file. 5kb to 25kb file, but no pip installs needed. uses standardlib. if argparse is in standardlib.
++ decrypted message does not replace og message, it will be named <input_file>.decrypted, like you pass <message_file>.encrypted to the decryptor.
+
+"""
+
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-#from emojipedia import (
+
+# from emojipedia import (
 #    Emojipedia,
-#)  # replace with a massive list of hardcoded emojis lol.
+# )  # replace with a massive list of hardcoded emojis lol.
+import asyncio
 import secrets
 import os.path
 import ast
 
 
-def get_all_emojis() -> set:
+async def get_all_emojis() -> set:
     """You like hardcoded emoji set? Here you go ;)"""
     # return set([x.character for x in Emojipedia.all() if len(str(x.character)) == 1])
 
-    return (
+    return {
         "💆",
         "🕐",
         "🥁",
@@ -1261,17 +1309,17 @@ def get_all_emojis() -> set:
         "\U000e0050",
         "🎦",
         "🤱",
-    )
+    }
 
 
-def get_random_emoji_list(emoji_list: set) -> list:
+async def get_random_emoji_list(emoji_list: set) -> list:
     """Generates and returns a list of random emojis from a list of all available emojis.
     Uses secure random generator https://docs.python.org/3.6/library/secrets.html
     """
     return [emoji_list.pop() for x in range(secrets.randbelow(4) + 3)]
 
 
-def generate_key(filename):
+async def generate_key(filename):
     """Generates a key in form of a dictionary byte:emoji_list.
     Stores key as key.emojipher. Overwrites existing key if exists!
 
@@ -1282,9 +1330,9 @@ def generate_key(filename):
 
     print("👁👁 Generating key, I am not looking...")
 
-    emojis = get_all_emojis()
+    emojis = await get_all_emojis()
 
-    key = {x: get_random_emoji_list(emojis) for x in range(0, 256)}
+    key = {x: await get_random_emoji_list(emojis) for x in range(0, 256)}
 
     with open(filename + ".emojipher", "w") as f:
         # Write as string, can evaluate string to dict when reading key.
@@ -1293,7 +1341,7 @@ def generate_key(filename):
     print("🧑‍💻🤐 Key has been generated! Keep it safe.")
 
 
-def encrypt_data(filename: str, key: str):
+async def encrypt_data(filename: str, key: str):
     """Encrypts given file with given key. If such file exists, it is deleted!
 
     1. Load key.
@@ -1330,7 +1378,7 @@ def encrypt_data(filename: str, key: str):
     )
 
 
-def decrypt_data(filename: str, key: str):
+async def decrypt_data(filename: str, key: str):
     """Given a filename and a key, decrypts data into original file."""
 
     print("👀👽 Decrypting data, make sure you are alone!")
@@ -1363,43 +1411,6 @@ def decrypt_data(filename: str, key: str):
 
 
 if __name__ == "__main__":
-    description = """
-    👽 EMOJIPHER 👽
-    
-    Your favorite encryption tool!
-    
-    Are you bored of cryptographically safe means of encryption like AES256?
-    You hate asymmetric encryption?
-    You are a modern human that loves big hard drives and emojis?
-    You want to waste as much bandwith as you can?
-    You want to choke NSA and TENCENT servers with emoji?
-
-    If you answered any of those questions with YES, this script is for you.
-    
-    Encrypt your data by turning each byte of source file into emoji! Yes, thats right.
-    Each byte becomes 4 bytes! And you get multiple emoji possibilities per byte!
-    Frequency analysis? More like waste of electricity.
-    
-    Okay, I want this, but how do I start?
-    
-    1. Generate your personal key by issuing. It will append .emojipher to the end of your given name.
-        $ ./emojipher.py -g my_key
-        
-    2. Encrypt some data!
-        $ ./emojipher.py -e my_secrets.txt -k my_key.emojipher
-        
-    3. ... Do whatever you want, store it, send it, share it 🤡
-    
-    4. Decrypt your precious data.
-        $ ./emojipher.py -d my_secrets.txt.encrypted -k my_key.emojipher
-        
-    5. Enjoy your decrypted data, but make sure you are alone.
-    
-    Uses https://github.com/bcongdon/python-emojipedia for emoji generation 😍
-    
-    Made with 🤡 by the 🤤 in www.exception.lt
-    """
-
     parser = ArgumentParser(
         description=description, formatter_class=RawDescriptionHelpFormatter
     )
@@ -1408,14 +1419,26 @@ if __name__ == "__main__":
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-e", "--encrypt", type=str, help="file(s) to encrypt")
     group.add_argument("-d", "--decrypt", type=str, help="file(s) to decrypt")
+    group.add_argument("-c", "--changelog", action="store_true", help="see whats new!")
     parser.add_argument("-k", "--key", type=str, help="path to key")
     args = parser.parse_args()
 
     if args.generate:
-        generate_key(args.generate)
+        # await generate_key(args.generate)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(generate_key(args.generate))
+        loop.close()
 
     elif args.encrypt:
-        encrypt_data(args.encrypt, args.key)
+        # await encrypt_data(args.encrypt, args.key)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(encrypt_data(args.encrypt, args.key))
+        loop.close()
 
     elif args.decrypt:
-        decrypt_data(args.decrypt, args.key)
+        # await decrypt_data(args.decrypt, args.key)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(decrypt_data(args.decrypt, args.key))
+        loop.close()
+    elif args.changelog:
+        print(changelog)
