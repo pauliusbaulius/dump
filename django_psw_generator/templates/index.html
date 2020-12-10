@@ -1,0 +1,36 @@
+<html>
+<head>
+<style>
+* {
+max-width: 500px;
+margin: auto;
+padding: 1vh 1vw;
+}
+</style>
+</head>
+<body>
+
+<h1>Password* Generator v6.9</h1>
+
+<p>"very secure and good passwords 5/5" - UAB Laisvas Oras</p>
+
+<form action="">
+<input type="number" name="length" value="16" min="8" max="64" placeholder="len" required>
+<input type="checkbox" name="uppercase" checked>uppercase</input>
+<input type="checkbox" name="special">special</input>
+<input type="checkbox" name="numbers" checked>numbers</input>
+<input type="submit" value="generate">
+</form>
+
+<p>Generated password: <input type="text" value="{{ generated_password }}" id="password"><p>
+<button onclick="copyPassword()">copy!</button>
+<p><i>*do not trust a random password generator you find online :^)</i></p>
+<script>
+function copyPassword() {
+  var copy = document.getElementById("password");
+  copy.select();
+  document.execCommand("copy");
+}
+</script>
+</body>
+</html>
