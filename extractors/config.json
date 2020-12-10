@@ -1,0 +1,41 @@
+{
+	"path_media": "media/",
+	"path_database": "databases/data.db",
+	"services":
+	{
+		"telegram":
+		{
+			"enabled": true,
+			"api_hash": "test",
+			"api_id": "test
+		},
+		"todoist":
+		{
+			"enabled": true,
+			"api_key": "test"
+
+		},
+		"wakatime":
+		{
+			"enabled": true,
+			"api_key": "test"
+		},
+		"lastfm":
+		{
+			"enabled": true,
+			"username": "test",
+			"api_key": "test"
+		},
+		"firefox":
+		{
+			"enabled": true,
+			"path": "/home/paulius/.mozilla/firefox/bqwd185a.default-release"
+		},
+		"fitbit":
+		{
+			"enabled": false,
+			"consumer_key": "",
+			"consumer_secret": ""
+		}
+	}
+}
